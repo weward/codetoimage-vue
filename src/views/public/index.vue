@@ -1,16 +1,18 @@
 <template>
     <div>
-        
-        <h1>Public index</h1>
 
-        <CodeInput />
+        <CodeForm />
 
     </div>
 </template>
 
 <script setup>
-    import  CodeInput  from '@/components/CodeInput.vue'
+    import { onMounted } from 'vue'
+    import  CodeForm  from '@/components/Code/CodeForm.vue'
 
+    onMounted(() => {
+        console.log(import.meta.env.VITE_APP_NAME)
+    })
 </script>
 
 <style>

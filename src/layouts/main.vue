@@ -31,22 +31,9 @@ import { defineProps, reactive, onMounted, watchEffect } from 'vue'
 import { version as piniaVersion } from 'pinia/package.json'
 import { version as vueVersion } from 'vue/package.json'
 
-
-// const props = defineProps({
-//   title: String
-// })
-
-// const props = withDefaults(defineProps<pageDataProps>(), {
-//   pageData: {
-//     title: 'Public Page',
-//   }
-// })
-
 const pageData = reactive({
-  title: ,
+  title: `main | ${import.meta.env.VITE_APP_NAME}`,
 })
-
-
 
 </script>
 
