@@ -1,0 +1,81 @@
+/*!
+*
+* Author:   Roland Edward Santos
+* Email:    dev.weward@gmail.com
+* Profile:  https://www.linkedin.com/in/roland-edward-santos/
+*
+*/
+
+/*!
+* ======================
+*   ELEMENTS
+* ======================
+ */
+.btn {
+    padding: 10px 50px;
+    margin: 5px;
+}
+
+.btn-block {
+    padding: 5px 120px;
+}
+
+.btn-default {
+    background: #ececec;
+    color: #666;
+}
+
+/*!
+* ======================
+ *  ORIENTATION
+ * ======================
+ */
+
+.align-center {
+    text-align: center;
+}
+.align-right {
+    text-align: right;
+}
+
+/*!
+* ======================
+ *  SPACING 
+ * ======================
+ */
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.margin-bottom {
+    margin-bottom: 30px;
+}
+
+
+
+
+/*!
+ * ======================
+ *  REAL-ESTATE
+ * ======================
+ */
+.width-1-1 {
+    width: 100%;
+    max-width: 100%;
+}
+.child-width-1-2 > div {
+    width: 50%;
+    max-width: 50%;
+    display: inline-block;
+}
+
+/*!
+ * ======================
+ *  CUSTOM 
+ * ======================
+ */
+
+.tabbed {
+    tab-size: 4;
+}

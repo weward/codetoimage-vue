@@ -54,7 +54,7 @@ const obj = reactive({
     styleList: [],
     hasBackend: import.meta.env.VITE_HAS_BACKEND,
     chosenStyle: '',
-    defaultStyle: '../../../assets/css/astackoverflow-light.css',
+    defaultStyle: '../../../assets/css/highlightjs/astackoverflow-light.css',
     refreshComponent: 0,
     processing: false
 })
@@ -86,7 +86,7 @@ async function appendStyle() {
 }
 
 function getAssetUrl() {
-    return new URL(`../../../assets/css/${obj.chosenStyle}`, import.meta.url)
+    return new URL(`../../../assets/css/highlightjs/${obj.chosenStyle}`, import.meta.url)
 }
 
 function removeStyle() {
@@ -146,13 +146,4 @@ onMounted(() => {
 </script>
 
 <style>
-.btn {
-    padding: 10px 50px;
-    margin: 5px;
-}
-
-.align-center {
-    text-align: center;
-}
-
 </style>

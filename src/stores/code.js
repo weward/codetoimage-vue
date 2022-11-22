@@ -7,6 +7,7 @@ export const useCodeStore = defineStore({
   id: 'codeStore',
   
   state: () => ({
+    id: '',
     user_id: '',
     style_id: '',
     language_id: '',
@@ -28,7 +29,7 @@ export const useCodeStore = defineStore({
       return new Promise((resolve, reject) => {
         axios({
           method: 'GET',
-          url: `${config.apiUrl}/get-code-styles`,
+          url: `${config.apiUrl}/code-style`,
         })
         .then((res) => {
           if (res.data != null) {
@@ -44,6 +45,26 @@ export const useCodeStore = defineStore({
         })
       })
     },
+
+    getAll() {
+        return new Promise((resolve, reject) => {
+          axios({
+            method: 'GET',
+            url: `${config.apiUrl}/code`
+          })
+          .then((res) => {
+            if (res.data.length) {
+              resolve(res)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+
+            reject()
+          })
+        })
+    },
+    
     save(payload) {
       return new Promise((resolve, reject) => {
         let data = {
@@ -51,8 +72,6 @@ export const useCodeStore = defineStore({
           code: this.code,
           style_id: payload.style_id,
         }
-
-        console.log(data)
         
         axios({
           method: 'POST',
@@ -68,14 +87,26 @@ export const useCodeStore = defineStore({
           console.log(err)
           reject()
         })
-        .finally(() => {
-          
-        })
       })
     },
 
     getRecord() {
-        // view, edit
+        return new Promise((resolve, reject) => {
+          axios({
+            method: 'GET',
+            url: `${config.apiUrl}/code/${this.id}}`
+          })
+          .then((res) => {
+            if (res.data.length) {
+              resolve(res)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+
+            reject()
+          })
+        })
     },
 
     update() {

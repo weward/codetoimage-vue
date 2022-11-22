@@ -72,7 +72,5 @@
 </script>
 
 <style scope>
-.tabbed {
-    tab-size: 4;
-}
+
 </style>
