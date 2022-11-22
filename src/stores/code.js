@@ -75,7 +75,7 @@ export const useCodeStore = defineStore({
         
         axios({
           method: 'POST',
-          url: `${config.apiUrl}/save-code`,
+          url: `${config.apiUrl}/code`,
           data,
         })
         .then((res) => {
