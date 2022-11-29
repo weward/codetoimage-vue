@@ -33,7 +33,7 @@ export const useCodeStore = defineStore({
         })
         .then((res) => {
           if (res.data != null) {
-            resolve(res)
+            resolve(res.data)
           }
         })
         .catch((err) => {
@@ -53,8 +53,9 @@ export const useCodeStore = defineStore({
             url: `${config.apiUrl}/code`
           })
           .then((res) => {
-            if (res.data.length) {
-              resolve(res)
+            console.log(res)
+            if (res.data != null) {
+              resolve(res.data)
             }
           })
           .catch((err) => {
@@ -98,7 +99,7 @@ export const useCodeStore = defineStore({
           })
           .then((res) => {
             if (res.data.length) {
-              resolve(res)
+              resolve(res.data)
             }
           })
           .catch((err) => {
