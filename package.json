@@ -14,6 +14,7 @@
     "axios": "^1.1.3",
     "dotenv": "^16.0.3",
     "html2canvas": "github:niklasvh/html2canvas",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.23",
     "vue": "^3.2.41"
   },

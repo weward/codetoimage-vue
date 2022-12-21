@@ -24,17 +24,24 @@
 <script setup>
     import { onMounted, reactive, computed } from 'vue'
     import { useCodeStore } from '@/stores/code'
+    import { find } from 'lodash'
 
     const codeStore = useCodeStore()
 
     const obj = reactive({
         codes: [],
+        refreshComponent: 0,
     })
 
     function deleteRecord(codeId) {
+        console.log(codeId)
         codeStore.destroy(codeId)
             .then((res) => {
-                
+                console.log(res)
+                obj.codes = codeStore.codes
+
+                obj.refreshComponent += 1
+
             })
             .catch((err) => {
 

@@ -2,6 +2,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import axios from 'axios'
 import { config } from '@/config/general'
+import _ from 'lodash'
 
 export const useCodeStore = defineStore({
   id: 'codeStore',
@@ -120,8 +121,20 @@ export const useCodeStore = defineStore({
 
     },
 
-    destroy() {
-
+    destroy(codeId) {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'DELETE',
+          url: `${config.apiUrl}/code/${codeId}`
+        })
+        .then((res) => {
+          this.codes = this.codes.filter((each) => each.id != codeId)
+          resolve(true)
+        })
+        .catch((err) => {
+          console.log('failed!')
+        })
+      })
     },
 
     getStyleId() {
@@ -129,6 +142,10 @@ export const useCodeStore = defineStore({
         resolve(this.$state.style_id)
       })
     },
+
+    clearCode() {
+      this.code = ''
+    }
 
   }
 

@@ -115,7 +115,8 @@ function saveBtn()
 
 function clearBtn()
 {
-    codeStore.$reset()
+    codeStore.clearCode()
+
     obj.id = ''
     obj.title = ''
     obj.style_id = ''
