@@ -8,12 +8,15 @@ export const useCodeStore = defineStore({
   
   state: () => ({
     id: '',
+    title: '',
     user_id: '',
     style_id: '',
+    code: '',
+    updated_at: '',
+    created_at: '',
     language_id: '',
     font_id: '',
-    title: '',
-    code: '',
+    codes: [],
   }),
 
   getters: {
@@ -53,8 +56,8 @@ export const useCodeStore = defineStore({
             url: `${config.apiUrl}/code`
           })
           .then((res) => {
-            console.log(res)
             if (res.data != null) {
+              this.codes = res.data.data
               resolve(res.data)
             }
           })
@@ -80,7 +83,10 @@ export const useCodeStore = defineStore({
           data,
         })
         .then((res) => {
-          if (res.status == 200) {
+          if (res.status == 201) {
+            let resData = res.data.data
+            this.codes.unshift(resData)
+
             resolve(res)
           }
         })

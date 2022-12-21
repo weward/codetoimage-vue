@@ -10,6 +10,10 @@
                         class="btn">
                         Edit
                     </button>
+                    <button
+                        @click="deleteRecord(code.id)"
+                        class="btn-sm btn-danger"
+                    ><strong>X</strong></button>
                 </div>
             </div>
         </div>
@@ -27,10 +31,21 @@
         codes: [],
     })
 
+    function deleteRecord(codeId) {
+        codeStore.destroy(codeId)
+            .then((res) => {
+                
+            })
+            .catch((err) => {
+
+            })
+    }
+
     onMounted(() => {
         codeStore.getAll()
         .then((res) => {
-            obj.codes = res.data
+            // obj.codes = res.data
+            obj.codes = codeStore.codes
         })
         .catch((err) => {
             console.log('[Code] - getAll() not working')
