@@ -1861,6 +1861,11 @@
   dependencies:
     "utrie" "^1.0.2"
 
+"thememirror@^2.0.1":
+  "integrity" "sha512-d5i6FVvWWPkwrm4cHLI3t9AT1OrkAt7Ig8dtdYSofgF7C/eiyNuq6zQzSTusWTde3jpW9WLvA9J/fzNKMUsd0w=="
+  "resolved" "https://registry.npmjs.org/thememirror/-/thememirror-2.0.1.tgz"
+  "version" "2.0.1"
+
 "throttleit@^1.0.0":
   "integrity" "sha512-rkTVqu6IjfQ/6+uNuuc3sZek4CEYxTJom3IktzgdSxcZqdARuebbA/f4QmAxMQIxqq9ZLEUkSYqvuk1I6VKq4g=="
   "resolved" "https://registry.npmjs.org/throttleit/-/throttleit-1.0.0.tgz"

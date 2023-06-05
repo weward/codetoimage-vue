@@ -5,10 +5,6 @@
  * https://codemirror.net/#languages
  * 
  */
-export const modes_test = () => console.log("test")
-
-export const modes_javascript = () => import("@codemirror/lang-javascript")
-
 export const selectedLanguage = async (selected) => {
     switch(selected) {
         case 'javascript':

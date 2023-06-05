@@ -31,6 +31,7 @@
     "html2canvas": "github:niklasvh/html2canvas",
     "lodash": "^4.17.21",
     "pinia": "^2.0.23",
+    "thememirror": "^2.0.1",
     "vue": "^3.2.41"
   },
   "devDependencies": {
