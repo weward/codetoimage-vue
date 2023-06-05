@@ -93,9 +93,6 @@
 </script>
 
 <style scope>
-.cm-line {
-    padding-left: 0 !important;
-}
 .cm-content {
     max-width: 95% !important;
     text-wrap: wrap !important;
