@@ -8,11 +8,17 @@
         </div>
 
         <div>
-            <!-- <select @change="changeStyle($event)" v-model="obj.style_id"> -->
-            <select @change="" v-model="obj.style_id">
+            <select @change="changeStyle($event)" v-model="obj.style_id">
                 <option value="" disabled :selected="obj.style_id == ''">{{"Select a style"}}</option>
-                <option v-if="!obj.hasBackend" v-for="style in styleList" :value="style">{{ style }}</option>
-                <option v-if="obj.hasBackend" v-for="(style, key) in obj.styleList" :value="style.id">{{ style.name }}
+                <option v-if="obj.hasBackend" v-for="(style, key) in obj.listStyle" :value="style.id">{{ style.name }}
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <select @change="changeLanguage($event)" v-model="obj.language_id">
+                <option value="" disabled :selected="obj.language_id == ''">{{ "Select a Language" }}</option>
+                <option v-if="obj.hasBackend" v-for="(lang, key) in obj.listLanguage" :value="lang.id">{{ lang.name }}
                 </option>
             </select>
         </div>
@@ -52,52 +58,36 @@ const codeStore = useCodeStore()
 const obj = reactive({
     title: '',
     style_id: '',
-    styleList: [],
+    listStyle: [],
+    listLanguage: [],
     hasBackend: import.meta.env.VITE_HAS_BACKEND,
-    chosenStyle: '',
-    chosenLanguage: '',
-    defaultStyle: '../../../assets/css/highlightjs/astackoverflow-light.css',
+    selectedStyle: '',
+    selectedLanguage: '',
     refreshComponent: 0,
     processing: false
 })
 
 async function changeStyle(event) {
-    let style = (!obj.hasBackend) ? event.target.value : obj.styleList.filter((item, key) => item.id === obj.style_id)[0].name
-    
-    obj.chosenStyle = `${style}.css`
-    
+    let code = (!obj.hasBackend) ? event.target.value : obj.listStyle.filter((item, key) => item.id === obj.style_id)[0].code
+    obj.selectedStyle = code
+
     codeStore.$patch({
-        style_id: obj.style_id
+        style_id: obj.style_id, 
+        selectedStyle: code
     })
-
-    await removeStyle()
-
-    await appendStyle()
 }
 
-async function appendStyle() {
-    let assetUrl = await getAssetUrl()
+async function changeLanguage(event) {
+    let code = (!obj.hasBackend) ? event.target.value : obj.listLanguage.filter((item, key) => item.id === obj.language_id)[0].code
+    obj.selectedLanguage = code
 
-    let style = document.createElement('link');
-    style.type = "text/css"
-    style.rel = "stylesheet"
-    style.id = "chosenStyle"
-    style.href = assetUrl
-
-    document.head.appendChild(style);
+    codeStore.$patch({
+        language_id: obj.language_id,
+        selectedLanguage: code
+    })
 }
 
-function getAssetUrl() {
-    return new URL(`../../../assets/css/highlightjs/${obj.chosenStyle}`, import.meta.url)
-}
 
-function removeStyle() {
-    let oldStyle = document.getElementById('chosenStyle')
-
-    if (oldStyle != null) {
-        oldStyle.remove()
-    }
-}
 
 function saveBtn()
 {
@@ -122,6 +112,7 @@ function clearBtn()
     obj.id = ''
     obj.title = ''
     obj.style_id = ''
+    obj.language_id = ''
 
     obj.refreshComponent += 1
 }
@@ -129,18 +120,26 @@ function clearBtn()
 onMounted(() => {
     console.log('[Loaded Module] CodeForm')
 
-    // if (obj.hasBackend) {
-    //     codeStore.getCodeStyles()
-    //         .then((res) => {
-    //             obj.styleList = res.data
-    //         })
-    // } else {
-        // obj.styleList = styleList
-    // }
+    if (obj.hasBackend) {
+        codeStore.getCodeStyles()
+            .then((res) => {
+                obj.listStyle = res.data
+                // obj.style_id = res.data[0].id
+                // obj.selectedStyle = res.data[0].code
+            })
+
+        codeStore.getCodeLanguages()
+            .then((res) => {
+                obj.listLanguage = res.data
+                // obj.language_id = res.data[0].id
+                // obj.selectedLanguage = res.data[0].code
+            })
+    }
 
     obj.id = codeStore.id
     obj.title = codeStore.title
     obj.style_id = codeStore.style_id
+    obj.language_id = codeStore.language_id
 
 })
 

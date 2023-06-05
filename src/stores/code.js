@@ -12,14 +12,14 @@ export const useCodeStore = defineStore({
     title: '',
     user_id: '',
     style_id: '',
+    language_id: '',
     code: '',
     updated_at: '',
     created_at: '',
-    language_id: '',
     font_id: '',
     codes: [],
-    selectedLanguage: 'javascript',
-    selectedTheme: 'birdsOfParadise',
+    selectedLanguage: '',
+    selectedStyle: '',
   }),
 
   getters: {
@@ -48,6 +48,27 @@ export const useCodeStore = defineStore({
         })
         .finally(() => {
           console.log('done fetching code styles!')
+        })
+      })
+    },
+
+    getCodeLanguages() {
+      return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `${config.apiUrl}/code-language`,
+        })
+        .then((res) => {
+          if (res.data != null) {
+            resolve(res.data)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          reject()
+        })
+        .finally(() => {
+          console.log('done fetching code languages!')
         })
       })
     },

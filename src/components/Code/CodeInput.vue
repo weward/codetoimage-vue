@@ -12,7 +12,6 @@
     import { EditorState } from "@codemirror/state"
     import { selectedLanguage } from '@/static/languages.js'
     import { selectedTheme } from '@/static/themes.js'
-    // import { dracula } from 'thememirror'
 
     const componentRefresh = defineProps(['componentRefresh'])
 
@@ -24,31 +23,71 @@
     })
 
     const currentLanguage = async (selected) => {
-
         let language = await selectedLanguage(selected)
+        console.log(selected)
 
         return await language[`${selected}`]()
     }
 
-    let editor = new EditorView({
-        state: EditorState.create({
+    const editorStateExtensions = async () => {
+        let arr = [
+            basicSetup,
+            await EditorView.updateListener.of(function (e) {
+                codeStore.code = e.state.doc.toString();
+            })
+        ];
+        
+        if (codeStore.selectedLanguage) {
+            await arr.push(await currentLanguage(codeStore.selectedLanguage)) 
+        }
+
+        if (codeStore.selectedStyle) {
+            await arr.push(await selectedTheme(codeStore.selectedStyle)) 
+        }
+
+        return await arr
+    }
+
+    const editorState = {
         doc: codeStore.code,
         lineWrapping: true,
-        extensions: [
-            basicSetup,
-            await currentLanguage(codeStore.selectedLanguage),
-            await selectedTheme(codeStore.selectedTheme),
-        ],
+        extensions: await editorStateExtensions(),
         parent: document.querySelector("#code-parent"),
-        })
+    }
+
+    let editor = new EditorView({
+        state: EditorState.create(editorState)
     })
 
+    const updateEditorConfig = async () => {
+        // CREATE NEW INSTANCE
+        await editor.destroy()
+
+        let newState = await editorState
+        newState.doc = await codeStore.code
+
+        newState.extensions = await editorStateExtensions()
+        editor = await new EditorView({
+            state: EditorState.create(newState)
+        })
+
+        await document.querySelector("#code-parent").appendChild(editor.dom)
+    }
+
     onMounted(() => {
-        console.log(selectedTheme(codeStore.selectedTheme))
         console.log('[Loaded Module]: CodeInput')
         obj.code = codeStore.code
         // Load Editor
         document.querySelector("#code-parent").appendChild(editor.dom)
+
+        codeStore.$subscribe(async (mutation, state) => {
+            // IF changed dropdown value of code style
+            if (mutation.payload?.hasOwnProperty('selectedStyle') || 
+                mutation.payload?.hasOwnProperty('selectedLanguage')
+            ) {
+                await updateEditorConfig()
+            }
+        })
     })
 
 </script>
