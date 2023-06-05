@@ -18,7 +18,8 @@ export const useCodeStore = defineStore({
     language_id: '',
     font_id: '',
     codes: [],
-    selectedLanguage: 'php',
+    selectedLanguage: 'javascript',
+    selectedTheme: 'birdsOfParadise',
   }),
 
   getters: {
