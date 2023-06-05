@@ -49,14 +49,14 @@
     }
 
     onMounted(() => {
-        codeStore.getAll()
-        .then((res) => {
-            // obj.codes = res.data
-            obj.codes = codeStore.codes
-        })
-        .catch((err) => {
-            console.log('[Code] - getAll() not working')
-        })
+        // codeStore.getAll()
+        // .then((res) => {
+        //     // obj.codes = res.data
+        //     obj.codes = codeStore.codes
+        // })
+        // .catch((err) => {
+        //     console.log('[Code] - getAll() not working')
+        // })
     })
 
 </script>

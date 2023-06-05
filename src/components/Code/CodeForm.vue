@@ -8,7 +8,8 @@
         </div>
 
         <div>
-            <select @change="changeStyle($event)" v-model="obj.style_id">
+            <!-- <select @change="changeStyle($event)" v-model="obj.style_id"> -->
+            <select @change="" v-model="obj.style_id">
                 <option value="" disabled :selected="obj.style_id == ''">{{"Select a style"}}</option>
                 <option v-if="!obj.hasBackend" v-for="style in styleList" :value="style">{{ style }}</option>
                 <option v-if="obj.hasBackend" v-for="(style, key) in obj.styleList" :value="style.id">{{ style.name }}
@@ -17,7 +18,9 @@
         </div>
 
         <div>
-            <CodeInput :key="obj.refreshComponent"/>
+            <Suspense>
+                <CodeInput :key="obj.refreshComponent"/>
+            </Suspense>
         </div>
 
         <div class="align-center">
@@ -44,8 +47,6 @@ import { reactive, onMounted } from 'vue'
 import CodeInput from '@/components/Code/CodeInput.vue'
 import { useCodeStore } from '@/stores/code'
 
-import { styleList } from '@/static/styleList'
-
 const codeStore = useCodeStore()
 
 const obj = reactive({
@@ -54,6 +55,7 @@ const obj = reactive({
     styleList: [],
     hasBackend: import.meta.env.VITE_HAS_BACKEND,
     chosenStyle: '',
+    chosenLanguage: '',
     defaultStyle: '../../../assets/css/highlightjs/astackoverflow-light.css',
     refreshComponent: 0,
     processing: false
@@ -127,14 +129,14 @@ function clearBtn()
 onMounted(() => {
     console.log('[Loaded Module] CodeForm')
 
-    if (obj.hasBackend) {
-        codeStore.getCodeStyles()
-            .then((res) => {
-                obj.styleList = res.data
-            })
-    } else {
-        obj.styleList = styleList
-    }
+    // if (obj.hasBackend) {
+    //     codeStore.getCodeStyles()
+    //         .then((res) => {
+    //             obj.styleList = res.data
+    //         })
+    // } else {
+        // obj.styleList = styleList
+    // }
 
     obj.id = codeStore.id
     obj.title = codeStore.title

@@ -15,7 +15,7 @@
 
 
 ## Plugins
-- [Syntax/code highlight plugin](https://highlightjs.org/)
+- [CodeMirror](https://codemirror.net/)
 - [HTML2Canvas](https://html2canvas.hertzen.com/)
 
 

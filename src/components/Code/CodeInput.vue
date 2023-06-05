@@ -1,72 +1,50 @@
 <template>
-    <div>
-        
-        <textarea 
-            @keydown.tab.prevent="pressedTab"
-            @change="updateStore"
-            ref="inputTextArea"
-            v-model.trim="obj.code"
-            id="" 
-            name="code" 
-            cols="30" 
-            rows="10"
-            style="width: 100%;">
-        </textarea>
-
-        <highlightjs 
-            v-if="obj.code.length"
-            language='vue' 
-            :code="obj.code" 
-            contenteditable="true" 
-            class="tabbed" 
-        />
-
-    </div>
+    <div id="code-parent"></div>
 </template>
 
 <script setup>
 
-    import { reactive, onMounted, ref } from 'vue'
+    import { reactive, onMounted } from 'vue'
     import { useCodeStore } from '@/stores/code'
-    import hljsVuePlugin from "@highlightjs/vue-plugin";
-    
-    import 'highlight.js/lib/common'
-    import 'highlight.js/styles/stackoverflow-light.css'
-    
+
+    import { basicSetup } from "codemirror"
+    import { EditorView } from "@codemirror/view";
+    import { EditorState } from "@codemirror/state";
+    import { selectedLanguage } from '@/static/languages.js'
+
     const componentRefresh = defineProps(['componentRefresh'])
 
-    const highlightjs = hljsVuePlugin.component
-
     const codeStore = useCodeStore()
-    
-    const inputTextArea = ref('')
 
     const obj = reactive({
-        code: '',
+        code: '.',
         hasBackend: import.meta.env.VITE_HAS_BACKEND,
     })
 
-    
-    function pressedTab($event)
-    {    
-        let textArea = inputTextArea.value
-        let start = $event.target.selectionStart
-        let end = $event.target.selectionEnd
+    const currentLanguage = async (selected) => {
 
-        textArea = `${textArea.value.substring(0, start)}\t${textArea.value.substring(end)}`
-        $event.target.value = textArea
-        $event.target.selectionStart = $event.target.selectionEnd = start + 1
+        let language = await selectedLanguage(selected)
+
+        return await language[`${selected}`]()
     }
 
-    function updateStore($event)
-    {
-        codeStore.code = obj.code
-        console.log(codeStore.code)
-    }
+    let editor = new EditorView({
+        state: EditorState.create({
+
+        doc: codeStore.code,
+        extensions: [
+            basicSetup,
+            await currentLanguage(codeStore.selectedLanguage),
+        ],
+        parent: document.querySelector("#code-parent")
+        })
+    })
 
     onMounted(() => {
         console.log('[Loaded Module]: CodeInput')
         obj.code = codeStore.code
+        // Load Editor
+        document.querySelector("#code-parent").appendChild(editor.dom)
     })
 
 </script>
