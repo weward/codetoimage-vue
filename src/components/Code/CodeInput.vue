@@ -25,7 +25,6 @@
 
     const currentLanguage = async (selected) => {
         let language = await selectedLanguage(selected)
-        console.log(selected)
 
         return await language[`${selected}`]()
     }

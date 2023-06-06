@@ -28,11 +28,11 @@
 
         <div class="bg-selection-container align-self-center">
             <div v-for="bg in obj.bgs" :key="bg" class="bg-selection-box-container">
-                <div @click="selectBgBox($event, bg)" :class="`${bg} bg-selection-box`"></div>
+                <div @click="changeBg($event, bg)" :class="`${bg} bg-selection-box`"></div>
             </div>
         </div>
 
-        <div id="code" :class="`${obj.codeBg} bg-code margin-bottom`" ref="codeEditor">
+        <div id="code" :class="`${obj.code_bg} bg-code margin-bottom`" ref="codeEditor">
             <Suspense>
                 <CodeInput :key="obj.refreshComponent"/>
             </Suspense>
@@ -83,6 +83,7 @@ const obj = reactive({
     refreshComponent: 0,
     processing: false,
     bgs: ['bg-dark', 'bg-light', 'bg-blue', 'bg-mango', 'bg-blue-pink', 'bg-sun', 'bg-coffee-dark', 'bg-coffee-light'],
+    code_bg: '',
     printURL: '',
 })
 
@@ -108,7 +109,7 @@ async function changeLanguage(event) {
     })
 }
 
-const selectBgBox = async ($event, selectedBg) => {
+const changeBg = async ($event, selectedBg) => {
     await document.querySelectorAll('.bg-selection-box-container')
         .forEach(async (el) => { 
             await el.classList.remove('bg-selection-box-container-active')
@@ -116,7 +117,11 @@ const selectBgBox = async ($event, selectedBg) => {
     
     await $event.target.parentNode.classList.add('bg-selection-box-container-active')
 
-    obj.codeBg = selectedBg
+    obj.code_bg = selectedBg
+
+    codeStore.$patch({
+        code_bg: obj.code_bg,
+    })
 }
 
 const downloadBtn = async() => {
@@ -137,8 +142,7 @@ const downloadBtn = async() => {
         })
 }
 
-function saveBtn()
-{
+const saveBtn = async() => {
     obj.processing = true
 
     codeStore.save(obj)
@@ -161,6 +165,7 @@ function clearBtn()
     obj.title = ''
     obj.style_id = ''
     obj.language_id = ''
+    obj.code_bg = ''
 
     obj.refreshComponent += 1
 }

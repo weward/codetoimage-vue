@@ -20,6 +20,7 @@ export const useCodeStore = defineStore({
     codes: [],
     selectedLanguage: '',
     selectedStyle: '',
+    code_bg: '',
   }),
 
   getters: {
@@ -98,7 +99,9 @@ export const useCodeStore = defineStore({
         let data = {
           title: payload.title,
           code: this.code,
-          style_id: payload.style_id,
+          style_id: this.style_id,
+          language_id: this.language_id,
+          code_bg: this.code_bg,
         }
         
         axios({
