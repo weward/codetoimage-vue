@@ -8,7 +8,7 @@
     import { useCodeStore } from '@/stores/code'
 
     import { basicSetup } from "codemirror"
-    import { EditorView } from "@codemirror/view"
+    import { EditorView, placeholder } from "@codemirror/view"
     import { EditorState } from "@codemirror/state"
     import { selectedLanguage } from '@/static/languages.js'
     import { selectedTheme } from '@/static/themes.js'
@@ -20,6 +20,7 @@
     const obj = reactive({
         code: '.',
         hasBackend: import.meta.env.VITE_HAS_BACKEND,
+        placeholder: 'Input code here...',
     })
 
     const currentLanguage = async (selected) => {
@@ -32,6 +33,7 @@
     const editorStateExtensions = async () => {
         let arr = [
             basicSetup,
+            placeholder(obj.placeholder),
             await EditorView.updateListener.of(function (e) {
                 codeStore.code = e.state.doc.toString();
             })
@@ -56,7 +58,7 @@
     }
 
     let editor = new EditorView({
-        state: EditorState.create(editorState)
+        state: EditorState.create(editorState),
     })
 
     const updateEditorConfig = async () => {

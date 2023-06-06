@@ -6,6 +6,16 @@
 *
 */
 
+input,
+select {
+    padding: 10px;
+    color: #525252 !important;
+}
+
+.block {
+    display: block;
+}
+
 /*!
 * ======================
 *   ELEMENTS
@@ -60,8 +70,13 @@
     margin-bottom: 30px;
 }
 
+.ml-15 {
+    margin-left: 15px;
+}
 
-
+.mr-15 {
+    margin-right: 15px;
+}
 
 /*!
  * ======================
@@ -86,4 +101,23 @@
 
 .tabbed {
     tab-size: 4;
+}
+
+/*
+ * ======================
+ *  Code Form 
+ * ======================
+ */
+
+.styling-container {
+    display: flex;
+}
+
+.form-control {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.form-input {
+    width: 100%;
 }

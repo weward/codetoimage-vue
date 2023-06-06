@@ -1,29 +1,38 @@
 <template>
     <div>
-        <div>
+        <div class="form-control">
             <input 
                 v-model="obj.title"
                 type="text" 
+                class="form-input"
                 placeholder="Input title here...">
         </div>
 
-        <div>
-            <select @change="changeStyle($event)" v-model="obj.style_id">
-                <option value="" disabled :selected="obj.style_id == ''">{{"Select a style"}}</option>
-                <option v-if="obj.hasBackend" v-for="(style, key) in obj.listStyle" :value="style.id">{{ style.name }}
-                </option>
-            </select>
+        <div class="styling-container">
+            <div class="form-control mr-15">
+                <select @change="changeStyle($event)" v-model="obj.style_id" class="form-input">
+                    <option value="" disabled :selected="obj.style_id == ''">{{ "Select a style" }}</option>
+                    <option v-if="obj.hasBackend" v-for="(style, key) in obj.listStyle" :value="style.id">{{ style.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-control ml-15">
+                <select @change="changeLanguage($event)" v-model="obj.language_id" class="form-input">
+                    <option value="" disabled :selected="obj.language_id == ''">{{ "Select a Language" }}</option>
+                    <option v-if="obj.hasBackend" v-for="(lang, key) in obj.listLanguage" :value="lang.id">{{ lang.name }}
+                    </option>
+                </select>
+            </div>
         </div>
 
-        <div>
-            <select @change="changeLanguage($event)" v-model="obj.language_id">
-                <option value="" disabled :selected="obj.language_id == ''">{{ "Select a Language" }}</option>
-                <option v-if="obj.hasBackend" v-for="(lang, key) in obj.listLanguage" :value="lang.id">{{ lang.name }}
-                </option>
-            </select>
+        <div class="bg-selection-container">
+            <div v-for="bg in obj.bgs" :key="bg" class="bg-selection-box-container">
+                <div @click="selectBgBox($event, bg)" :class="`${bg} bg-selection-box`"></div>
+            </div>
         </div>
 
-        <div>
+        <div id="code" :class="`${obj.codeBg} bg-code margin-bottom`">
             <Suspense>
                 <CodeInput :key="obj.refreshComponent"/>
             </Suspense>
@@ -64,7 +73,8 @@ const obj = reactive({
     selectedStyle: '',
     selectedLanguage: '',
     refreshComponent: 0,
-    processing: false
+    processing: false,
+    bgs: ['bg-dark', 'bg-light', 'bg-blue', 'bg-mango', 'bg-blue-pink', 'bg-sun', 'bg-coffee-dark', 'bg-coffee-light'],
 })
 
 async function changeStyle(event) {
@@ -87,7 +97,16 @@ async function changeLanguage(event) {
     })
 }
 
+const selectBgBox = async ($event, selectedBg) => {
+    await document.querySelectorAll('.bg-selection-box-container')
+        .forEach(async (el) => { 
+            await el.classList.remove('bg-selection-box-container-active')
+        })
+    
+    await $event.target.parentNode.classList.add('bg-selection-box-container-active')
 
+    obj.codeBg = selectedBg
+}
 
 function saveBtn()
 {
@@ -122,18 +141,14 @@ onMounted(() => {
 
     if (obj.hasBackend) {
         codeStore.getCodeStyles()
-            .then((res) => {
-                obj.listStyle = res.data
-                // obj.style_id = res.data[0].id
-                // obj.selectedStyle = res.data[0].code
-            })
+        .then((res) => {
+            obj.listStyle = res.data
+        })
 
         codeStore.getCodeLanguages()
-            .then((res) => {
-                obj.listLanguage = res.data
-                // obj.language_id = res.data[0].id
-                // obj.selectedLanguage = res.data[0].code
-            })
+        .then((res) => {
+            obj.listLanguage = res.data
+        })
     }
 
     obj.id = codeStore.id
@@ -146,5 +161,8 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style lang="scss">
+
+    @import '@/../assets/scss/bg.scss';
+
 </style>
