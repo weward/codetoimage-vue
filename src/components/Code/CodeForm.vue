@@ -120,8 +120,6 @@ const selectBgBox = async ($event, selectedBg) => {
 }
 
 const downloadBtn = async() => {
-    console.log('printing...')
-
     const options = {
         type: 'dataURL',
         backgroundColor: "rgba(0,0,0,0)",
@@ -131,11 +129,11 @@ const downloadBtn = async() => {
     
     obj.printURL = await app.ctx.$html2canvas(codeEditor.value, options)
         .then((canvas) => {
-            console.log(canvas)
-            // // Preview
-            let img = document.createElement('img')
-            img.src = canvas
-            document.getElementById('code').appendChild(img)
+            // Preview
+            let a = document.createElement('a')
+            a.href = canvas
+            a.download = "CodeToImage"
+            a.click()
         })
 }
 

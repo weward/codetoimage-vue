@@ -1,6 +1,6 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-import regeneratorRuntime from "regenerator-runtime"
+import regeneratorRuntime from "regenerator-runtime" // do not remove!
 import VueHtml2Canvas from 'vue-html2canvas'
 import App from './App.vue'
 
