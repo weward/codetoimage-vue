@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1>{{ props.title ?? "Default Public Page Layout" }}</h1>
-        <p>Dress your code!</p>
+        <p>Dress-up your code!</p>
     </header>
 
     <slot />

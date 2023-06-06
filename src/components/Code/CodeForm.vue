@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-column">
         <div class="form-control">
             <input 
                 v-model="obj.title"
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="bg-selection-container">
+        <div class="bg-selection-container align-self-center">
             <div v-for="bg in obj.bgs" :key="bg" class="bg-selection-box-container">
                 <div @click="selectBgBox($event, bg)" :class="`${bg} bg-selection-box`"></div>
             </div>
