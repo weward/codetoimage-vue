@@ -32,13 +32,20 @@
             </div>
         </div>
 
-        <div id="code" :class="`${obj.codeBg} bg-code margin-bottom`">
+        <div id="code" :class="`${obj.codeBg} bg-code margin-bottom`" ref="codeEditor">
             <Suspense>
                 <CodeInput :key="obj.refreshComponent"/>
             </Suspense>
         </div>
 
         <div class="align-center">
+            <button 
+                @click="downloadBtn()" 
+                :disabled="obj.processing || codeStore.code.length == 0"
+                class="btn">
+                Download
+            </button>
+
             <button 
                 @click="saveBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
@@ -49,7 +56,7 @@
             <button 
                 @click="clearBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
-                class="btn">
+                class="btn btn-default">
                 Clear
             </button>
         </div>
@@ -58,10 +65,11 @@
 </template>
 
 <script setup>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref, getCurrentInstance } from 'vue'
 import CodeInput from '@/components/Code/CodeInput.vue'
 import { useCodeStore } from '@/stores/code'
 
+const app = getCurrentInstance()
 const codeStore = useCodeStore()
 
 const obj = reactive({
@@ -75,7 +83,10 @@ const obj = reactive({
     refreshComponent: 0,
     processing: false,
     bgs: ['bg-dark', 'bg-light', 'bg-blue', 'bg-mango', 'bg-blue-pink', 'bg-sun', 'bg-coffee-dark', 'bg-coffee-light'],
+    printURL: '',
 })
+
+const codeEditor = ref('codeEditor')
 
 async function changeStyle(event) {
     let code = (!obj.hasBackend) ? event.target.value : obj.listStyle.filter((item, key) => item.id === obj.style_id)[0].code
@@ -106,6 +117,26 @@ const selectBgBox = async ($event, selectedBg) => {
     await $event.target.parentNode.classList.add('bg-selection-box-container-active')
 
     obj.codeBg = selectedBg
+}
+
+const downloadBtn = async() => {
+    console.log('printing...')
+
+    const options = {
+        type: 'dataURL',
+        backgroundColor: "rgba(0,0,0,0)",
+        dpi: 192, // 1.5x resolution
+        // scale: 4,
+    }
+    
+    obj.printURL = await app.ctx.$html2canvas(codeEditor.value, options)
+        .then((canvas) => {
+            console.log(canvas)
+            // // Preview
+            let img = document.createElement('img')
+            img.src = canvas
+            document.getElementById('code').appendChild(img)
+        })
 }
 
 function saveBtn()
