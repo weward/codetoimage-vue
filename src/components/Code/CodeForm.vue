@@ -51,22 +51,27 @@
             <button 
                 @click="downloadBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
-                class="btn fa fa-floppy-disk">
-                Download
+                class="btn">
+                <font-awesome-icon icon="download" />
+
             </button>
 
             <button 
                 @click="saveBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
                 class="btn">
-                Save
+
+                <font-awesome-icon icon="floppy-disk" />
+
             </button>
 
             <button 
                 @click="clearBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
                 class="btn btn-default">
-                Clear
+                
+                <font-awesome-icon icon="arrows-rotate" />
+
             </button>
         </div>
 

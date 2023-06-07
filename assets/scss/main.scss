@@ -12,6 +12,14 @@ select {
     color: #525252 !important;
 }
 
+.font-satisfy {
+    font-family: 'Satisfy', cursive;
+}
+
+.font-pacifico {
+    font-family: 'Pacifico', cursive;
+}
+
 .text-success {
     color: #009400;
 }
@@ -68,6 +76,11 @@ select {
     color: #666;
 }
 
+.btn-default:hover {
+    background: #999999;
+    color: #fff;
+}
+
 .btn-danger {
     background: #dd2020;
 }
@@ -78,6 +91,9 @@ select {
  * ======================
  */
 
+.text-center {
+    text-align: center;
+}
 .align-center {
     text-align: center;
 }
@@ -97,6 +113,10 @@ select {
 
 .margin-bottom {
     margin-bottom: 30px;
+}
+
+.mb-0 {
+    margin-bottom: 0px;
 }
 
 .ml-15 {
@@ -130,6 +150,13 @@ select {
 
 .tabbed {
     tab-size: 4;
+}
+.app-title {
+    color: #262626;
+}
+.app-sub-title {
+    font-size: 20px;
+    color: #f44079;
 }
 
 /*
