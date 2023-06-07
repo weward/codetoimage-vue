@@ -6,6 +6,8 @@
                 type="text" 
                 class="form-input"
                 placeholder="Input title here...">
+            <span v-if="obj.err.title" class="text-danger text-sm">{{ obj.err.title }}</span>
+
         </div>
 
         <div class="styling-container">
@@ -15,6 +17,7 @@
                     <option v-if="obj.hasBackend" v-for="(style, key) in obj.listStyle" :value="style.id">{{ style.name }}
                     </option>
                 </select>
+                <span v-if="obj.err.style_id" class="text-danger text-sm">{{ obj.err.style_id }}</span>
             </div>
 
             <div class="form-control ml-15">
@@ -23,6 +26,7 @@
                     <option v-if="obj.hasBackend" v-for="(lang, key) in obj.listLanguage" :value="lang.id">{{ lang.name }}
                     </option>
                 </select>
+                <span v-if="obj.err.language_id" class="text-danger text-sm">{{ obj.err.language_id }}</span>
             </div>
         </div>
 
@@ -32,17 +36,22 @@
             </div>
         </div>
 
+        <div v-if="obj.showMsg" class="margin-top align-self-center text-success bold">
+            <span >Saved!</span>
+        </div>
+
         <div id="code" :class="`${obj.code_bg} bg-code margin-bottom`" ref="codeEditor">
             <Suspense>
                 <CodeInput :key="obj.refreshComponent"/>
             </Suspense>
         </div>
+        <span v-if="obj.err.code" class="text-danger text-sm align-self-center margin-bottom">{{ obj.err.code }}</span>
 
         <div class="align-center">
             <button 
                 @click="downloadBtn()" 
                 :disabled="obj.processing || codeStore.code.length == 0"
-                class="btn">
+                class="btn fa fa-floppy-disk">
                 Download
             </button>
 
@@ -73,8 +82,10 @@ const app = getCurrentInstance()
 const codeStore = useCodeStore()
 
 const obj = reactive({
+    showMsg: false,
     title: '',
     style_id: '',
+    language_id: '',
     listStyle: [],
     listLanguage: [],
     hasBackend: import.meta.env.VITE_HAS_BACKEND,
@@ -85,6 +96,12 @@ const obj = reactive({
     bgs: ['bg-dark', 'bg-light', 'bg-blue', 'bg-mango', 'bg-blue-pink', 'bg-sun', 'bg-coffee-dark', 'bg-coffee-light'],
     code_bg: '',
     printURL: '',
+    err: {
+        title: '',
+        code: '',
+        style_id: '',
+        langauge_id: '',
+    }
 })
 
 const codeEditor = ref('codeEditor')
@@ -144,21 +161,29 @@ const downloadBtn = async() => {
 
 const saveBtn = async() => {
     obj.processing = true
+    clearErrors()
 
     codeStore.save(obj)
         .then((res) => {
             clearBtn()
+            showMsg()
         })
         .catch((err) => {
-
+            console.log(err)
+            console.log(err.response.data)
+            if (err.response.status == 422) {
+                for (const [key, value]  of Object.entries(err.response.data.errors)) {
+                    obj.err[`${key}`] = value[0]
+                    console.log(`${key} ${value[0]}`)
+                }
+            }
         })
         .finally(() => {
             obj.processing = false
         })
 }
 
-function clearBtn()
-{
+const clearBtn = () => {
     codeStore.clearCode()
 
     obj.id = ''
@@ -168,6 +193,20 @@ function clearBtn()
     obj.code_bg = ''
 
     obj.refreshComponent += 1
+}
+
+const showMsg = async (msg) => {
+    obj.showMsg = await!obj.showMsg
+
+    await setTimeout(() => {
+        obj.showMsg = !obj.showMsg
+    }, 5000)
+}
+
+const clearErrors = () => {
+    for (const [key, value] of Object.entries(obj.err)) {
+        obj.err[`${key}`] = ''
+    }
 }
 
 onMounted(() => {
@@ -189,7 +228,6 @@ onMounted(() => {
     obj.title = codeStore.title
     obj.style_id = codeStore.style_id
     obj.language_id = codeStore.language_id
-
 })
 
 

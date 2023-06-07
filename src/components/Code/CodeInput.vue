@@ -89,6 +89,7 @@
                 await updateEditorConfig()
             }
         })
+        
     })
 
 </script>

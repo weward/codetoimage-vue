@@ -12,6 +12,22 @@ select {
     color: #525252 !important;
 }
 
+.text-success {
+    color: #009400;
+}
+
+.text-danger {
+    color: #c90909;
+}
+
+.text-sm {
+    font-size: .85rem;
+}
+
+.bold {
+    font-weight: 600;
+}
+
 .block {
     display: block;
 }

@@ -110,7 +110,7 @@ export const useCodeStore = defineStore({
           data,
         })
         .then((res) => {
-          if (res.status == 201) {
+          if (res.status == 200) {
             let resData = res.data.data
             this.codes.unshift(resData)
 
@@ -118,8 +118,8 @@ export const useCodeStore = defineStore({
           }
         })
         .catch((err) => {
-          console.log(err)
-          reject()
+          console.log("[ERROR]: Code.save()")
+          reject(err)
         })
       })
     },
@@ -171,6 +171,7 @@ export const useCodeStore = defineStore({
 
     clearCode() {
       this.code = ''
+
     }
 
   }
