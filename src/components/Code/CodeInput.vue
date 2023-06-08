@@ -84,12 +84,12 @@
         codeStore.$subscribe(async (mutation, state) => {
             // IF changed dropdown value of code style
             if (mutation.payload?.hasOwnProperty('selectedStyle') || 
-                mutation.payload?.hasOwnProperty('selectedLanguage')
+                mutation.payload?.hasOwnProperty('selectedLanguage') || 
+                mutation.payload?.hasOwnProperty('editing')
             ) {
                 await updateEditorConfig()
             }
         })
-        
     })
 
 </script>

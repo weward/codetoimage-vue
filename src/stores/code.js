@@ -21,6 +21,7 @@ export const useCodeStore = defineStore({
     selectedLanguage: '',
     selectedStyle: '',
     code_bg: '',
+    editing: false,
   }),
 
   getters: {
@@ -94,7 +95,7 @@ export const useCodeStore = defineStore({
         })
     },
     
-    save(payload) {
+    saveCode(payload) {
       return new Promise((resolve, reject) => {
         let data = {
           title: payload.title,
@@ -118,7 +119,43 @@ export const useCodeStore = defineStore({
           }
         })
         .catch((err) => {
-          console.log("[ERROR]: Code.save()")
+          console.log("[ERROR]: Code.saveCode()")
+          reject(err)
+        })
+      })
+    },
+
+    updateCode(payload) {
+      return new Promise((resolve, reject) => {
+        let data = {
+          id: this.id,
+          title: payload.title,
+          code: this.code,
+          style_id: this.style_id,
+          language_id: this.language_id,
+          code_bg: this.code_bg,
+        }
+
+        axios({
+          method: 'PUT',
+          url: `${config.apiUrl}/code/${this.id}`,
+          data,
+        })
+        .then((res) => {
+          console.log('then')
+          if (res.status == 200) {
+            let resData = res.data.data
+
+            let index = this.codes.map((obj) => obj.id).indexOf(this.id)
+            if (index !== -1) {
+              this.codes[`${index}`] = resData
+            }
+
+            resolve(res)
+          }
+        })
+        .catch((err) => {
+          console.log("[ERROR]: Code.updateCode()")
           reject(err)
         })
       })
@@ -171,7 +208,13 @@ export const useCodeStore = defineStore({
 
     clearCode() {
       this.code = ''
-
+      this.title = ''
+      this.style_id = ''
+      this.language_id = ''
+      this.code_bg = ''
+      this.selectedLanguage = ''
+      this.selectedStyle = ''
+      this.editing = false
     }
 
   }
