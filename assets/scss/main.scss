@@ -33,9 +33,24 @@ select {
 .text-success {
     color: #009400;
 }
-
+.text-primary:hover {
+    color: #7fb7f9;
+}
 .text-danger {
-    color: #c90909;
+    color: #d65454;
+}
+.text-danger:hover {
+    color: #e69292;
+}
+.text-cancel {
+    color: #666;
+    text-decoration: none;
+}
+.text-cancel:hover {
+    color: #d65454;
+}
+.text-confirm {
+    text-decoration: none;
 }
 
 .text-sm {
@@ -126,12 +141,17 @@ select {
  * ======================
  */
 
-.margin-top {
+.margin-top, .mt {
     margin-top: 30px;
 }
-
-.margin-bottom {
+.margin-right, .mr {
+    margin-right: 30px;
+}
+.margin-bottom, .mb {
     margin-bottom: 30px;
+}
+.margin-left, .ml {
+    margin-left: 30px;
 }
 
 .mb-0 {
@@ -187,6 +207,11 @@ select {
 .app-sub-title {
     font-size: 20px;
     color: #f44079;
+}
+.table-confirm-box {
+    display: block;
+    font-size: 12px;
+    line-height: 10px;
 }
 
 /*

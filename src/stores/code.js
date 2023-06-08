@@ -95,7 +95,7 @@ export const useCodeStore = defineStore({
         })
     },
     
-    saveCode(payload) {
+    save(payload) {
       return new Promise((resolve, reject) => {
         let data = {
           title: payload.title,
@@ -125,7 +125,7 @@ export const useCodeStore = defineStore({
       })
     },
 
-    updateCode(payload) {
+    update(payload) {
       return new Promise((resolve, reject) => {
         let data = {
           id: this.id,
@@ -178,10 +178,6 @@ export const useCodeStore = defineStore({
             reject()
           })
         })
-    },
-
-    update() {
-
     },
 
     destroy(codeId) {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="obj.codes.length">
-            <h3 class="margin-top margin-bottom">History</h3>
+            <h3 class="mt mb">History</h3>
             <div v-for="code in obj.codes" class="width-1-1 child-width-1-2">
                 <div>{{ code.title }}</div>
                 <div class="align-right">

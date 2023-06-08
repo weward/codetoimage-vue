@@ -38,16 +38,16 @@
             </div>
         </div>
 
-        <div v-if="obj.showMsg" class="margin-top align-self-center text-success bold">
+        <div v-if="obj.showMsg" class="mt align-self-center text-success bold">
             <span >{{ obj.msg }}</span>
         </div>
 
-        <div id="code" :class="`${obj.code_bg} bg-code margin-bottom`" ref="codeEditor">
+        <div id="code" :class="`${obj.code_bg} bg-code mb`" ref="codeEditor">
             <Suspense>
                 <CodeInput :key="obj.refreshComponent"/>
             </Suspense>
         </div>
-        <span v-if="obj.err.code" class="text-danger text-sm align-self-center margin-bottom">{{ obj.err.code }}</span>
+        <span v-if="obj.err.code" class="text-danger text-sm align-self-center mb">{{ obj.err.code }}</span>
 
         <div class="align-center">
             <button 
@@ -172,7 +172,7 @@ const downloadBtn = async() => {
 }
 
 const save = () => {
-    codeStore.saveCode(obj)
+    codeStore.save(obj)
     .then((res) => {
         clearBtn()
         showMsg("Saved!")
@@ -186,7 +186,7 @@ const save = () => {
 }
 
 const update = () => {
-    codeStore.updateCode(obj)
+    codeStore.update(obj)
     .then((res) => {
         clearBtn()
         showMsg("Updated!")
